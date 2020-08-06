@@ -1,0 +1,90 @@
+.button {
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid #f5e077;
+    border-radius: 4px;
+    background: #f5e077;
+    color: black;
+    cursor: pointer;
+    margin-right: 1rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.button:hover,
+.button:active {
+    background: #a1965f;
+    border-color: #a1965f;
+    color: white;
+}
+
+.button--inverse {
+    background: transparent;
+    color: #f5e077;
+    color: black;
+}
+
+.button--inverse:hover,
+.button--inverse:active {
+    color: white;
+    background: #f8e9a1;
+}
+
+.button--danger {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.button--danger:hover,
+.button--danger:active {
+    background: #8f2832;
+    border-color: #8f2832;
+    color: white;
+}
+.button--primary {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.button--primary:hover,
+.button--primary:active {
+    background: #004c9e;
+    border-color: #004c9e;
+    color: white;
+}
+
+.button--success {
+    background: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.button--success:hover,
+.button--success:active {
+    background: #106123;
+    border-color: #106123;
+    color: white;
+}
+
+.button:disabled,
+.button:hover:disabled,
+.button:active:disabled {
+    background: #ccc;
+    color: #979797;
+    border-color: #ccc;
+    cursor: not-allowed;
+}
+
+.button--small {
+    font-size: 0.8rem;
+}
+
+.button--big {
+    font-size: 1.5rem;
+}
