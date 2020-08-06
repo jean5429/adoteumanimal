@@ -6,7 +6,13 @@ import './NewAnimal.css';
 const NewAnimal = () => {
     return (
         <form className="animal-form">
-            <Input element="input" type="text" label="Title" />
+            <Input
+                element="input"
+                type="text"
+                label="Title"
+                validators={[]}
+                errorText="Please enter a valid text."
+            />
         </form>
     );
 };
