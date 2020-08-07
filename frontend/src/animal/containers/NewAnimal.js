@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Input from '../../shared/components/FormElements/Input';
+import { VALIDATOR_REQUIRE } from '../../shared/utils/validators';
 import './NewAnimal.css';
 
 const NewAnimal = () => {
@@ -10,7 +11,7 @@ const NewAnimal = () => {
                 element="input"
                 type="text"
                 label="Title"
-                validators={[]}
+                validators={[VALIDATOR_REQUIRE()]}
                 errorText="Please enter a valid text."
             />
         </form>
