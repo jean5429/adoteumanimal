@@ -33,6 +33,8 @@ const AnimalItem = (props) => {
                                 <h2>{props.name}</h2>
                                 <h3>{props.species}</h3>
                                 <p>{props.city}</p>
+                                <p>Descrição: {props.description}</p>
+                                <p>Aparência: {props.appearante}</p>
                             </div>
                             <div className="details-item__actions">
                                 <Button to={`/animal/${props.id}`}>
