@@ -39,11 +39,15 @@ const formReducer = (state, action) => {
 const NewAnimal = () => {
     const [formState, dispatch] = useReducer(formReducer, {
         inputs: {
-            title: {
+            name: {
                 value: '',
                 isValid: false,
             },
             description: {
+                value: '',
+                isValid: false,
+            },
+            appearance: {
                 value: '',
                 isValid: false,
             },
@@ -62,20 +66,62 @@ const NewAnimal = () => {
     return (
         <form className="animal-form">
             <Input
-                id="title"
+                id="name"
                 element="input"
                 type="text"
-                label="Title"
+                label="Nome"
                 validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter a valid text."
+                errorText="Por favor, coloque um nome válido."
+                onInput={inputHandler}
+            />
+            <Input
+                id="species"
+                element="radio"
+                name="species"
+                type="radio"
+                value="dog"
+                label="Espécie"
+                content="Cachorro"
+                checked="true"
+                validators="false"
+                errorText="Por favor, selecione a espécie do animal"
+                onInput={inputHandler}
+            />
+            <Input
+                id="species"
+                name="species"
+                element="radio"
+                type="radio"
+                value="cat"
+                content="Gato"
+                validators={[VALIDATOR_REQUIRE()]}
+                onInput={inputHandler}
+            />
+            <Input
+                id="city"
+                element="input"
+                type="text"
+                label="Cidade"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Por favor, coloque uma cidade válida."
                 onInput={inputHandler}
             />
             <Input
                 id="description"
                 element="textarea"
-                label="Description"
+                label="Descrição"
                 validators={[VALIDATOR_MINLENGTH(5)]}
-                errorText="Please enter a valid description (at least 5 characters)."
+                placeholder="Descrição da personalidade do animal."
+                errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
+                onInput={inputHandler}
+            />
+            <Input
+                id="appearance"
+                element="textarea"
+                label="Aparência"
+                validators={[VALIDATOR_MINLENGTH(5)]}
+                placeholder="Descrição da aparência física do animal."
+                errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
                 onInput={inputHandler}
             />
             <Button success type="submit" disabled={!formState.isValid}>

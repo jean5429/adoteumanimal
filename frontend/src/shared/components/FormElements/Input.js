@@ -61,10 +61,22 @@ const Input = (props) => {
                 onBlur={touchHandler}
                 value={inputState.value}
             />
-        ) : (
+        ) : props.element === 'textarea' ? (
             <textarea
                 id={props.id}
+                placeholder={props.placeholder}
                 rows={props.rows || 3}
+                onChange={changeHandler}
+                onBlur={touchHandler}
+                value={inputState.value}
+            />
+        ) : (
+            <input
+                id={props.id}
+                type={props.type}
+                name={props.name}
+                checked={props.checked}
+                placeholder={props.placeholder}
                 onChange={changeHandler}
                 onBlur={touchHandler}
                 value={inputState.value}
@@ -81,6 +93,7 @@ const Input = (props) => {
         >
             <label htmlFor={props.id}>{props.label}</label>
             {element}
+            {typeof props.content !== 'undefined' ? props.content : ''}
             {!inputState.isValid && inputState.isTouched && (
                 <p>{props.errorText}</p>
             )}
