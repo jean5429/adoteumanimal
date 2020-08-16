@@ -37,7 +37,7 @@ const AnimalItem = (props) => {
                                 <p>Aparência: {props.appearante}</p>
                             </div>
                             <div className="details-item__actions">
-                                <Button to={`/animal/${props.id}`}>
+                                <Button to={`/animal/edit/${props.id}`}>
                                     EDITAR
                                 </Button>
                                 <Button danger>DELETAR</Button>
@@ -48,7 +48,10 @@ const AnimalItem = (props) => {
             </Modal>
             <li className="animal-item">
                 <Card className="animal-item__content">
-                    <Link to="/" onClick={openAnimalHandler}>
+                    <Link
+                        to={props.page === 'home' ? '/' : '/meusanimais'}
+                        onClick={openAnimalHandler}
+                    >
                         <div className="animal-item__image">
                             <Avatar image={props.image} alt={props.name} />
                         </div>

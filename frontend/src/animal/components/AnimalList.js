@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AnimalItem from './AnimalItem';
+import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
 import './AnimalList.css';
 
@@ -9,7 +10,7 @@ function pageType(page) {
         return (
             <p>
                 <h2>Nenhum animal cadastrado.</h2>
-                <button className="button-success">Cadastar novo Animal</button>
+                <Button to="/animal/novo">Cadastrar novo animal</Button>
             </p>
         );
     } else {
@@ -37,6 +38,7 @@ const AnimalList = (props) => {
                     city={animal.city}
                     species={animal.species}
                     owner={animal.owner}
+                    page={props.page}
                 />
             ))}
         </ul>

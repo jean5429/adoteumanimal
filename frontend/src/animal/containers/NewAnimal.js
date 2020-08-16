@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from 'react';
+import React from 'react';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
@@ -7,38 +7,12 @@ import {
     VALIDATOR_MINLENGTH,
     VALIDATOR_NONE,
 } from '../../shared/utils/validators';
-import './NewAnimal.css';
-
-const formReducer = (state, action) => {
-    switch (action.type) {
-        case 'INPUT_CHANGE':
-            let formIsValid = true;
-            for (const inputId in state.inputs) {
-                if (inputId === action.inputId) {
-                    formIsValid = formIsValid && action.isValid;
-                } else {
-                    formIsValid = formIsValid && state.inputs[inputId].isValid;
-                }
-            }
-            return {
-                ...state,
-                inputs: {
-                    ...state.inputs,
-                    [action.inputId]: {
-                        value: action.value,
-                        isValid: action.isValid,
-                    },
-                },
-                isValid: formIsValid,
-            };
-        default:
-            return state;
-    }
-};
+import { useForm } from '../../shared/hooks/form-hook';
+import './AnimalForm.css';
 
 const NewAnimal = () => {
-    const [formState, dispatch] = useReducer(formReducer, {
-        inputs: {
+    const [formState, inputHandler] = useForm(
+        {
             name: {
                 value: '',
                 isValid: false,
@@ -47,21 +21,17 @@ const NewAnimal = () => {
                 value: '',
                 isValid: false,
             },
+            species: {
+                value: '',
+                isValid: true,
+            },
             appearance: {
                 value: '',
                 isValid: false,
             },
         },
-        isValid: false,
-    });
-    const inputHandler = useCallback((id, value, isValid) => {
-        dispatch({
-            type: 'INPUT_CHANGE',
-            value: value,
-            isValid: isValid,
-            inputId: id,
-        });
-    }, []);
+        false
+    );
 
     const animalSubmitHandler = (event) => {
         event.preventDefault();
@@ -85,8 +55,9 @@ const NewAnimal = () => {
                 element="radio"
                 name="species"
                 type="radio"
-                val="dog"
+                valid={true}
                 value="dog"
+                values={['dog', 'cat']}
                 label="Espécie"
                 content="Cachorro"
                 checked={true}
@@ -98,8 +69,9 @@ const NewAnimal = () => {
                 id="species"
                 name="species"
                 element="radio"
+                valid={true}
                 type="radio"
-                val="cat"
+                value="cat"
                 content="Gato"
                 validators={[VALIDATOR_NONE()]}
                 onInput={inputHandler}

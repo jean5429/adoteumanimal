@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
+import Card from '../../shared/components/UIElements/Card';
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_MINLENGTH,
 } from '../../shared/utils/validators';
+import { useForm } from '../../shared/hooks/form-hook';
+
+import './AnimalForm.css';
 
 const ANIMALS = [
     {
@@ -144,20 +148,78 @@ const ANIMALS = [
 ];
 
 const UpdateAnimal = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const animalId = useParams().animalId;
+
+    const [formState, inputHandler, setFormData] = useForm(
+        {
+            description: {
+                value: '',
+                isValid: false,
+            },
+            city: {
+                value: '',
+                isValid: false,
+            },
+            appearance: {
+                value: '',
+                isValid: false,
+            },
+        },
+        false
+    );
 
     const identifiedAnimal = ANIMALS.find((p) => p.id === animalId);
 
+    useEffect(() => {
+        if (identifiedAnimal) {
+            setFormData(
+                {
+                    description: {
+                        value: identifiedAnimal.description,
+                        isValid: true,
+                    },
+                    city: {
+                        value: identifiedAnimal.city,
+                        isValid: true,
+                    },
+                    appearance: {
+                        value: identifiedAnimal.appearance,
+                        isValid: true,
+                    },
+                },
+                true
+            );
+        }
+        setIsLoading(false);
+    }, [setFormData, identifiedAnimal]);
+
+    const animalUpdateSubmitHandler = (event) => {
+        event.preventDefault();
+        console.log(formState.inputs);
+        //Database connection
+    };
+
     if (!identifiedAnimal) {
         return (
+            <Card>
+                <div className="center">
+                    <h2>Could not find animal!</h2>
+                </div>
+            </Card>
+        );
+    }
+
+    if (isLoading) {
+        return (
             <div className="center">
-                <h2>Could not find animal!</h2>
+                <h2>Loading...</h2>
             </div>
         );
     }
 
     return (
-        <form>
+        <form className="animal-form" onSubmit={animalUpdateSubmitHandler}>
             <Input
                 id="city"
                 element="input"
@@ -165,9 +227,9 @@ const UpdateAnimal = () => {
                 label="Cidade"
                 validators={[VALIDATOR_REQUIRE()]}
                 errorText="Por favor, coloque uma cidade válida."
-                onInput={() => {}}
-                value={identifiedAnimal.city}
-                isValid={true}
+                onInput={inputHandler}
+                initialValue={formState.inputs.city.value}
+                initialValidity={formState.inputs.city.isValid}
             />
             <Input
                 id="description"
@@ -176,9 +238,9 @@ const UpdateAnimal = () => {
                 validators={[VALIDATOR_MINLENGTH(5)]}
                 placeholder="Descrição da personalidade do animal."
                 errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
-                onInput={() => {}}
-                value={identifiedAnimal.description}
-                isValid={true}
+                onInput={inputHandler}
+                initialValue={formState.inputs.description.value}
+                initialValidity={formState.inputs.description.isValid}
             />
             <Input
                 id="appearance"
@@ -187,11 +249,11 @@ const UpdateAnimal = () => {
                 validators={[VALIDATOR_MINLENGTH(5)]}
                 placeholder="Descrição da aparência física do animal."
                 errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
-                onInput={() => {}}
-                value={identifiedAnimal.appearance}
-                isValid={true}
+                onInput={inputHandler}
+                initialValue={formState.inputs.appearance.value}
+                initialValidity={formState.inputs.appearance.isValid}
             />
-            <Button success type="submit" disabled={true}>
+            <Button success type="submit" disabled={!formState.isValid}>
                 Atualizar Animal
             </Button>
         </form>

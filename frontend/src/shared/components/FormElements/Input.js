@@ -25,8 +25,8 @@ const inputReducer = (state, action) => {
 
 const Input = (props) => {
     const [inputState, dispatch] = useReducer(inputReducer, {
-        value: '',
-        isValid: false,
+        value: props.initialValue || '',
+        isValid: props.initialValidity || false,
         isTouched: false,
     });
 
@@ -78,9 +78,21 @@ const Input = (props) => {
             );
             break;
         case 'radio':
-            //let myArray = Array.from(props.values);
-            //console.log(myArray);
-            //myArray.map((option) => console.log(option.option));
+            /*element = [];
+            for (const individualValue in props.values) {
+                element[individualValue] = (
+                    <input
+                        id={props.id}
+                        type={props.type}
+                        placeholder={props.placeholder}
+                        onChange={changeHandler}
+                        onBlur={touchHandler}
+                        value={individualValue}
+                        name={props.name}
+                        checked={props.checked}
+                    />
+                );
+            }*/
             element = (
                 <input
                     id={props.id}
