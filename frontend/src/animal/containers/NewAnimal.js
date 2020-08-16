@@ -5,6 +5,7 @@ import Button from '../../shared/components/FormElements/Button';
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_MINLENGTH,
+    VALIDATOR_NONE,
 } from '../../shared/utils/validators';
 import './NewAnimal.css';
 
@@ -16,7 +17,6 @@ const formReducer = (state, action) => {
                 if (inputId === action.inputId) {
                     formIsValid = formIsValid && action.isValid;
                 } else {
-                    console.log(state.inputs);
                     formIsValid = formIsValid && state.inputs[inputId].isValid;
                 }
             }
@@ -63,8 +63,14 @@ const NewAnimal = () => {
         });
     }, []);
 
+    const animalSubmitHandler = (event) => {
+        event.preventDefault();
+        console.log(formState.inputs);
+        //Database connection
+    };
+
     return (
-        <form className="animal-form">
+        <form className="animal-form" onSubmit={animalSubmitHandler}>
             <Input
                 id="name"
                 element="input"
@@ -79,12 +85,13 @@ const NewAnimal = () => {
                 element="radio"
                 name="species"
                 type="radio"
+                val="dog"
                 value="dog"
                 label="Espécie"
                 content="Cachorro"
-                checked="true"
-                validators="false"
-                errorText="Por favor, selecione a espécie do animal"
+                checked={true}
+                validators={[VALIDATOR_NONE()]}
+                //errorText="Por favor, selecione a espécie do animal"
                 onInput={inputHandler}
             />
             <Input
@@ -92,9 +99,9 @@ const NewAnimal = () => {
                 name="species"
                 element="radio"
                 type="radio"
-                value="cat"
+                val="cat"
                 content="Gato"
-                validators={[VALIDATOR_REQUIRE()]}
+                validators={[VALIDATOR_NONE()]}
                 onInput={inputHandler}
             />
             <Input

@@ -48,7 +48,7 @@ const AnimalItem = (props) => {
             </Modal>
             <li className="animal-item">
                 <Card className="animal-item__content">
-                    <Link onClick={openAnimalHandler}>
+                    <Link to="/" onClick={openAnimalHandler}>
                         <div className="animal-item__image">
                             <Avatar image={props.image} alt={props.name} />
                         </div>

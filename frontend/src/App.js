@@ -14,6 +14,7 @@ import Details from './animal/containers/Details';
 //import Animal from './animal/containers/Animal';
 import NewAnimal from './animal/containers/NewAnimal';
 import Auth from './user/containers/Auth';
+import UpdateAnimal from './animal/containers/UpdateAnimal';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 
 const App = () => {
@@ -39,6 +40,9 @@ const App = () => {
                     </Route>
                     <Route path="/animal/:animalId" exact>
                         <Details />
+                    </Route>
+                    <Route path="/animal/edit/:animalId" exact>
+                        <UpdateAnimal />
                     </Route>
                     <Redirect to="/" />
                 </Switch>

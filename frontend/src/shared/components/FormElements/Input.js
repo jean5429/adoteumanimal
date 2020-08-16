@@ -50,44 +50,69 @@ const Input = (props) => {
             type: 'TOUCH',
         });
     };
+    let element = null;
 
-    const element =
-        props.element === 'input' ? (
-            <input
-                id={props.id}
-                type={props.type}
-                placeholder={props.placeholder}
-                onChange={changeHandler}
-                onBlur={touchHandler}
-                value={inputState.value}
-            />
-        ) : props.element === 'textarea' ? (
-            <textarea
-                id={props.id}
-                placeholder={props.placeholder}
-                rows={props.rows || 3}
-                onChange={changeHandler}
-                onBlur={touchHandler}
-                value={inputState.value}
-            />
-        ) : (
-            <input
-                id={props.id}
-                type={props.type}
-                name={props.name}
-                checked={props.checked}
-                placeholder={props.placeholder}
-                onChange={changeHandler}
-                onBlur={touchHandler}
-                value={inputState.value}
-            />
-        );
+    switch (props.element) {
+        case 'input':
+            element = (
+                <input
+                    id={props.id}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                />
+            );
+            break;
+        case 'textarea':
+            element = (
+                <textarea
+                    id={props.id}
+                    placeholder={props.placeholder}
+                    rows={props.rows || 3}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                />
+            );
+            break;
+        case 'radio':
+            //let myArray = Array.from(props.values);
+            //console.log(myArray);
+            //myArray.map((option) => console.log(option.option));
+            element = (
+                <input
+                    id={props.id}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                    name={props.name}
+                    checked={props.checked}
+                />
+            );
+            break;
+        default:
+            element = (
+                <textarea
+                    id={props.id}
+                    placeholder={props.placeholder}
+                    rows={props.rows || 3}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                />
+            );
+    }
 
     return (
         <div
             className={`form-control ${
                 !inputState.isValid &&
                 inputState.isTouched &&
+                props.type !== 'radio' &&
                 'form-control--invalid'
             }`}
         >
