@@ -77,34 +77,41 @@ const Input = (props) => {
                 />
             );
             break;
-        case 'radio':
-            /*element = [];
-            for (const individualValue in props.values) {
-                element[individualValue] = (
-                    <input
-                        id={props.id}
-                        type={props.type}
-                        placeholder={props.placeholder}
-                        onChange={changeHandler}
-                        onBlur={touchHandler}
-                        value={individualValue}
-                        name={props.name}
-                        checked={props.checked}
-                    />
+        case 'select':
+            let options = [];
+            for (var i = 0; i < props.values.length; i++) {
+                let item = (
+                    <option
+                        key={props.values[i].type}
+                        value={props.values[i].type}
+                        checked={props.values[i].checked}
+                    >
+                        {props.values[i].type === 'dog' ? 'Cachorro' : 'Gato'}
+                    </option>
                 );
-            }*/
+                options.push(item);
+            }
             element = (
+                <select
+                    id={props.id}
+                    name={props.name}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                >
+                    {options}
+                </select>
+            );
+            /*element = (
                 <input
                     id={props.id}
                     type={props.type}
-                    placeholder={props.placeholder}
                     onChange={changeHandler}
                     onBlur={touchHandler}
                     value={inputState.value}
                     name={props.name}
                     checked={props.checked}
                 />
-            );
+            );*/
             break;
         default:
             element = (

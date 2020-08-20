@@ -39,6 +39,8 @@ const AnimalList = (props) => {
                     species={animal.species}
                     owner={animal.owner}
                     page={props.page}
+                    description={animal.description}
+                    appearance={animal.appearance}
                 />
             ))}
         </ul>

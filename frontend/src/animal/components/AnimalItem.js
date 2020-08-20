@@ -31,10 +31,14 @@ const AnimalItem = (props) => {
                             </div>
                             <div className="details-item__info">
                                 <h2>{props.name}</h2>
-                                <h3>{props.species}</h3>
+                                <h3>
+                                    {props.species === 'dog'
+                                        ? 'cachorro'
+                                        : 'gato'}
+                                </h3>
                                 <p>{props.city}</p>
                                 <p>Descrição: {props.description}</p>
-                                <p>Aparência: {props.appearante}</p>
+                                <p>Aparência: {props.appearance}</p>
                             </div>
                             <div className="details-item__actions">
                                 <Button to={`/animal/edit/${props.id}`}>

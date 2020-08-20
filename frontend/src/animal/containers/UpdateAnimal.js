@@ -204,7 +204,7 @@ const UpdateAnimal = () => {
         return (
             <Card>
                 <div className="center">
-                    <h2>Could not find animal!</h2>
+                    <h2>Não foi possível encontrar o animal!</h2>
                 </div>
             </Card>
         );

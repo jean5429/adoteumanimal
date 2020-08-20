@@ -11,7 +11,9 @@ const Animals = () => {
             species: 'dog',
             image:
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSwZrJUFAW-Bg-21tnCy9w3fiq8xTSqV5viqA&usqp=CAU',
-            owner: '1',
+            owner: '2',
+            description: 'Animal super amigável',
+            appearance: 'Cor caramelo',
         },
         {
             id: '2',
@@ -21,6 +23,8 @@ const Animals = () => {
             image:
                 'https://portaldoscaesegatos.com.br/wp-content/uploads/2017/07/adotar-1.jpg',
             owner: '1',
+            description: '',
+            appearance: '',
         },
         {
             id: '3',
@@ -30,6 +34,8 @@ const Animals = () => {
             image:
                 'https://fotos.amomeupet.org/uploads/fotos/1300x0_1568662224_5d7fe2d09bccd.jpeg',
             owner: '1',
+            description: '',
+            appearance: '',
         },
         {
             id: '4',
@@ -39,6 +45,8 @@ const Animals = () => {
             image:
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTGg2H4lrGBx6t_GEqmgW8Tb0Ps0_i772DAAg&usqp=CAU',
             owner: '1',
+            description: '',
+            appearance: '',
         },
         {
             id: '5',
@@ -48,6 +56,8 @@ const Animals = () => {
             image:
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTT_ZUQF9nNH-UIpuTaIt9SSK4SjIlKUmPCSA&usqp=CAU',
             owner: '1',
+            description: '',
+            appearance: '',
         },
         {
             id: '6',
@@ -57,6 +67,8 @@ const Animals = () => {
             image:
                 'https://img.jornalcruzeiro.com.br/img/2013/07/12/media/85269_CSL030212L004F26.jpg',
             owner: '1',
+            description: '',
+            appearance: '',
         },
         {
             id: '7',
@@ -66,6 +78,8 @@ const Animals = () => {
             image:
                 'https://s2.glbimg.com/TdPTg4jg3ZqtmZtyFnuHehXLgmk=/0x314:720x1073/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/B/x/gU7r6UTvyFwLn5G5FlUg/whatsapp-image-2019-02-22-at-14.53.02.jpeg',
             owner: '1',
+            description: '',
+            appearance: '',
         },
         {
             id: '8',
@@ -75,6 +89,8 @@ const Animals = () => {
             image:
                 'https://www.petz.com.br/cachorro/racas/vira-lata/img/vira-lata-saudavel.webp',
             owner: '2',
+            description: '',
+            appearance: '',
         },
         {
             id: '9',
@@ -84,6 +100,9 @@ const Animals = () => {
             image:
                 'https://www.realh.com.br/drhomeopet/wp-content/uploads/2016/02/cat.jpg',
             owner: '2',
+            description:
+                'Gatinha super carinhosa, seu hobb favorita é caçar as pessoas',
+            appearance: 'Tricolor',
         },
         {
             id: '10',
@@ -93,6 +112,8 @@ const Animals = () => {
             image:
                 'https://www.significadodossonhos.inf.br/wp-content/uploads/2019/07/Sonhar-com-gato-amarelo3.jpg',
             owner: '1',
+            description: '',
+            appearance: '',
         },
         {
             id: '11',
@@ -102,6 +123,8 @@ const Animals = () => {
             image:
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTMBAeVGLnqFW0bV86x8x4_kUbdZHOrZkR1DA&usqp=CAU',
             owner: '2',
+            description: '',
+            appearance: '',
         },
         {
             id: '12',
@@ -111,6 +134,8 @@ const Animals = () => {
             image:
                 'https://www.petvale.com.br/imagens/62757-vira-lata-femea-perdido-cajuru-curitiba-pr_23962.jpg',
             owner: '1',
+            description: '',
+            appearance: '',
         },
     ];
     return (

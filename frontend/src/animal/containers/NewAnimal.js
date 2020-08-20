@@ -52,28 +52,20 @@ const NewAnimal = () => {
             />
             <Input
                 id="species"
-                element="radio"
+                element="select"
                 name="species"
                 type="radio"
                 valid={true}
-                value="dog"
-                values={['dog', 'cat']}
+                values={[
+                    { type: 'dog', checked: true },
+                    { type: 'cat', checked: false },
+                ]}
                 label="Espécie"
-                content="Cachorro"
                 checked={true}
+                initialValidity={true}
+                initialValue="dog"
                 validators={[VALIDATOR_NONE()]}
                 //errorText="Por favor, selecione a espécie do animal"
-                onInput={inputHandler}
-            />
-            <Input
-                id="species"
-                name="species"
-                element="radio"
-                valid={true}
-                type="radio"
-                value="cat"
-                content="Gato"
-                validators={[VALIDATOR_NONE()]}
                 onInput={inputHandler}
             />
             <Input
