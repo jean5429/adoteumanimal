@@ -86,7 +86,13 @@ const Input = (props) => {
                         value={props.values[i].type}
                         checked={props.values[i].checked}
                     >
-                        {props.values[i].type === 'dog' ? 'Cachorro' : 'Gato'}
+                        {props.values[i].type === 'dog'
+                            ? 'Cachorro'
+                            : props.values[i].type === 'cat'
+                            ? 'Gato'
+                            : props.values[i].type === 'user'
+                            ? 'Usuário Comum'
+                            : 'ONG'}
                     </option>
                 );
                 options.push(item);
@@ -112,6 +118,30 @@ const Input = (props) => {
                     checked={props.checked}
                 />
             );*/
+            break;
+        case 'email':
+            element = (
+                <input
+                    id={props.id}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                />
+            );
+            break;
+        case 'password':
+            element = (
+                <input
+                    id={props.id}
+                    type={props.type}
+                    placeholder={props.placeholder}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                />
+            );
             break;
         default:
             element = (

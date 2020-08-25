@@ -54,7 +54,7 @@ const NewAnimal = () => {
                 id="species"
                 element="select"
                 name="species"
-                type="radio"
+                type="select"
                 valid={true}
                 values={[
                     { type: 'dog', checked: true },

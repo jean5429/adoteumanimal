@@ -7,6 +7,9 @@ import './AnimalDetails.css';
 
 const AnimalDetails = (props) => {
     const animal = props.items[0];
+    if (props.items.length === 0) {
+        return <h2>Nenhum animal cadastrado.</h2>;
+    }
     return (
         <Card>
             <div className="details-container center">
