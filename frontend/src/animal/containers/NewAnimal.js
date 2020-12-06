@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_MINLENGTH,
     VALIDATOR_NONE,
 } from '../../shared/utils/validators';
 import { useForm } from '../../shared/hooks/form-hook';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 import './AnimalForm.css';
 
 const NewAnimal = () => {
+    const auth = useContext(AuthContext);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const [formState, inputHandler] = useForm(
         {
             name: {
@@ -33,72 +40,96 @@ const NewAnimal = () => {
         false
     );
 
-    const animalSubmitHandler = (event) => {
+    const history = useHistory();
+
+    const animalSubmitHandler = async (event) => {
         event.preventDefault();
-        console.log(formState.inputs);
-        //Database connection
+        try {
+            await sendRequest(
+                'http://localhost:5000/api/animal/',
+                'POST',
+                JSON.stringify({
+                    name: formState.inputs.name.value,
+                    city: formState.inputs.city.value,
+                    species: formState.inputs.species.value,
+                    image:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSwZrJUFAW-Bg-21tnCy9w3fiq8xTSqV5viqA&usqp=CAU',
+                    description: formState.inputs.description.value,
+                    appearance: formState.inputs.appearance.value,
+                    owner: auth.userId,
+                }),
+                { 'Content-Type': 'application/json' }
+            );
+            history.push('/');
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
-        <form className="animal-form" onSubmit={animalSubmitHandler}>
-            <Input
-                id="name"
-                element="input"
-                type="text"
-                label="Nome"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Por favor, coloque um nome válido."
-                onInput={inputHandler}
-            />
-            <Input
-                id="species"
-                element="select"
-                name="species"
-                type="select"
-                valid={true}
-                values={[
-                    { type: 'dog', checked: true },
-                    { type: 'cat', checked: false },
-                ]}
-                label="Espécie"
-                checked={true}
-                initialValidity={true}
-                initialValue="dog"
-                validators={[VALIDATOR_NONE()]}
-                //errorText="Por favor, selecione a espécie do animal"
-                onInput={inputHandler}
-            />
-            <Input
-                id="city"
-                element="input"
-                type="text"
-                label="Cidade"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Por favor, coloque uma cidade válida."
-                onInput={inputHandler}
-            />
-            <Input
-                id="description"
-                element="textarea"
-                label="Descrição"
-                validators={[VALIDATOR_MINLENGTH(5)]}
-                placeholder="Descrição da personalidade do animal."
-                errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
-                onInput={inputHandler}
-            />
-            <Input
-                id="appearance"
-                element="textarea"
-                label="Aparência"
-                validators={[VALIDATOR_MINLENGTH(5)]}
-                placeholder="Descrição da aparência física do animal."
-                errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
-                onInput={inputHandler}
-            />
-            <Button success type="submit" disabled={!formState.isValid}>
-                Adicionar Animal
-            </Button>
-        </form>
+        <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
+            <form className="animal-form" onSubmit={animalSubmitHandler}>
+                {isLoading && <LoadingSpinner asOverlay />}
+                <Input
+                    id="name"
+                    element="input"
+                    type="text"
+                    label="Nome"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    errorText="Por favor, coloque um nome válido."
+                    onInput={inputHandler}
+                />
+                <Input
+                    id="species"
+                    element="select"
+                    name="species"
+                    type="select"
+                    valid={true}
+                    values={[
+                        { type: 'dog', checked: true },
+                        { type: 'cat', checked: false },
+                    ]}
+                    label="Espécie"
+                    checked={true}
+                    initialValidity={true}
+                    initialValue="dog"
+                    validators={[VALIDATOR_NONE()]}
+                    //errorText="Por favor, selecione a espécie do animal"
+                    onInput={inputHandler}
+                />
+                <Input
+                    id="city"
+                    element="input"
+                    type="text"
+                    label="Cidade"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    errorText="Por favor, coloque uma cidade válida."
+                    onInput={inputHandler}
+                />
+                <Input
+                    id="description"
+                    element="textarea"
+                    label="Descrição"
+                    validators={[VALIDATOR_MINLENGTH(5)]}
+                    placeholder="Descrição da personalidade do animal."
+                    errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
+                    onInput={inputHandler}
+                />
+                <Input
+                    id="appearance"
+                    element="textarea"
+                    label="Aparência"
+                    validators={[VALIDATOR_MINLENGTH(5)]}
+                    placeholder="Descrição da aparência física do animal."
+                    errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
+                    onInput={inputHandler}
+                />
+                <Button success type="submit" disabled={!formState.isValid}>
+                    Adicionar Animal
+                </Button>
+            </form>
+        </React.Fragment>
     );
 };
 
