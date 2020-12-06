@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_MINLENGTH,
 } from '../../shared/utils/validators';
 import { useForm } from '../../shared/hooks/form-hook';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import './AnimalForm.css';
 
-const ANIMALS = [
+/*const ANIMALS = [
     {
         id: '1',
         name: 'Caramelo',
@@ -145,11 +149,14 @@ const ANIMALS = [
         description: '',
         appearance: '',
     },
-];
+];*/
 
 const UpdateAnimal = () => {
-    const [isLoading, setIsLoading] = useState(true);
+    const auth = useContext(AuthContext);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    const [loadedAnimal, setLoadedAnimal] = useState();
     const animalId = useParams().animalId;
+    const history = useHistory();
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -169,38 +176,67 @@ const UpdateAnimal = () => {
         false
     );
 
-    const identifiedAnimal = ANIMALS.find((p) => p.id === animalId);
-
     useEffect(() => {
-        if (identifiedAnimal) {
-            setFormData(
-                {
-                    description: {
-                        value: identifiedAnimal.description,
-                        isValid: true,
+        const fetchAnimal = async () => {
+            try {
+                const responseData = await sendRequest(
+                    `http://localhost:5000/api/animal/${animalId}`
+                );
+                setLoadedAnimal(responseData.animal);
+                setFormData(
+                    {
+                        description: {
+                            value: responseData.animal.description,
+                            isValid: true,
+                        },
+                        city: {
+                            value: responseData.animal.city,
+                            isValid: true,
+                        },
+                        appearance: {
+                            value: responseData.animal.appearance,
+                            isValid: true,
+                        },
                     },
-                    city: {
-                        value: identifiedAnimal.city,
-                        isValid: true,
-                    },
-                    appearance: {
-                        value: identifiedAnimal.appearance,
-                        isValid: true,
-                    },
-                },
-                true
-            );
-        }
-        setIsLoading(false);
-    }, [setFormData, identifiedAnimal]);
+                    true
+                );
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchAnimal();
+    }, [sendRequest, animalId, setFormData]);
 
-    const animalUpdateSubmitHandler = (event) => {
+    const animalUpdateSubmitHandler = async (event) => {
         event.preventDefault();
-        console.log(formState.inputs);
-        //Database connection
+        try {
+            await sendRequest(
+                `http://localhost:5000/api/animal/${animalId}`,
+                'PATCH',
+                JSON.stringify({
+                    description: formState.inputs.description.value,
+                    city: formState.inputs.city.value,
+                    appearance: formState.inputs.appearance.value,
+                }),
+                {
+                    'Content-Type': 'application/json',
+                }
+            );
+            history.push('/meusanimais');
+        } catch (err) {
+            console.log(err);
+        }
     };
 
-    if (!identifiedAnimal) {
+    if (isLoading) {
+        return (
+            <div className="center">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    if (!loadedAnimal && !error) {
         return (
             <Card>
                 <div className="center">
@@ -210,53 +246,53 @@ const UpdateAnimal = () => {
         );
     }
 
-    if (isLoading) {
-        return (
-            <div className="center">
-                <h2>Loading...</h2>
-            </div>
-        );
-    }
-
     return (
-        <form className="animal-form" onSubmit={animalUpdateSubmitHandler}>
-            <Input
-                id="city"
-                element="input"
-                type="text"
-                label="Cidade"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Por favor, coloque uma cidade válida."
-                onInput={inputHandler}
-                initialValue={formState.inputs.city.value}
-                initialValidity={formState.inputs.city.isValid}
-            />
-            <Input
-                id="description"
-                element="textarea"
-                label="Descrição"
-                validators={[VALIDATOR_MINLENGTH(5)]}
-                placeholder="Descrição da personalidade do animal."
-                errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
-                onInput={inputHandler}
-                initialValue={formState.inputs.description.value}
-                initialValidity={formState.inputs.description.isValid}
-            />
-            <Input
-                id="appearance"
-                element="textarea"
-                label="Aparência"
-                validators={[VALIDATOR_MINLENGTH(5)]}
-                placeholder="Descrição da aparência física do animal."
-                errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
-                onInput={inputHandler}
-                initialValue={formState.inputs.appearance.value}
-                initialValidity={formState.inputs.appearance.isValid}
-            />
-            <Button success type="submit" disabled={!formState.isValid}>
-                Atualizar Animal
-            </Button>
-        </form>
+        <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
+            {!isLoading && loadedAnimal && (
+                <form
+                    className="animal-form"
+                    onSubmit={animalUpdateSubmitHandler}
+                >
+                    <Input
+                        id="city"
+                        element="input"
+                        type="text"
+                        label="Cidade"
+                        validators={[VALIDATOR_REQUIRE()]}
+                        errorText="Por favor, coloque uma cidade válida."
+                        onInput={inputHandler}
+                        initialValue={loadedAnimal.city}
+                        initialValidity={true}
+                    />
+                    <Input
+                        id="description"
+                        element="textarea"
+                        label="Descrição"
+                        validators={[VALIDATOR_MINLENGTH(5)]}
+                        placeholder="Descrição da personalidade do animal."
+                        errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
+                        onInput={inputHandler}
+                        initialValue={loadedAnimal.description}
+                        initialValidity={true}
+                    />
+                    <Input
+                        id="appearance"
+                        element="textarea"
+                        label="Aparência"
+                        validators={[VALIDATOR_MINLENGTH(5)]}
+                        placeholder="Descrição da aparência física do animal."
+                        errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
+                        onInput={inputHandler}
+                        initialValue={loadedAnimal.appearance}
+                        initialValidity={true}
+                    />
+                    <Button success type="submit" disabled={!formState.isValid}>
+                        Atualizar Animal
+                    </Button>
+                </form>
+            )}
+        </React.Fragment>
     );
 };
 

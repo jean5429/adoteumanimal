@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+//import { useParams } from 'react-router-dom'; This is to get userId from the URL
 
 import AnimalList from '../components/AnimalList';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const MyAnimals = () => {
-    const ANIMALS = [
+    const auth = useContext(AuthContext);
+    const [loadedAnimals, setLoadedAnimals] = useState();
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    //const userId = useParams().userId; This is to get userId from the URL
+    const userId = auth.userId;
+
+    useEffect(() => {
+        const fetchAnimals = async () => {
+            try {
+                const responseData = await sendRequest(
+                    `http://localhost:5000/api/animal/user/${userId}`
+                );
+                setLoadedAnimals(responseData.animals);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchAnimals();
+    }, [sendRequest, userId]);
+
+    const AnimalDeletedHandler = (deletedAnimalId) => {
+        setLoadedAnimals((prevAnimals) =>
+            prevAnimals.filter((animal) => animal.id !== deletedAnimalId)
+        );
+    };
+    /*const ANIMALS = [
         {
             id: '1',
             name: 'Caramelo',
@@ -137,9 +168,25 @@ const MyAnimals = () => {
             description: '',
             appearance: '',
         },
-    ];
-    const MyFilteredAnimals = ANIMALS.filter((p) => p.owner === '2');
-    return <AnimalList items={MyFilteredAnimals} page="myanimals" />;
+    ];*/
+    //const MyFilteredAnimals = ANIMALS.filter((p) => p.owner === '2');
+    return (
+        <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
+            {isLoading && (
+                <div className="center">
+                    <LoadingSpinner asOverlay />
+                </div>
+            )}
+            {!isLoading && loadedAnimals && (
+                <AnimalList
+                    items={loadedAnimals}
+                    page="myanimals"
+                    onDeleteAnimal={AnimalDeletedHandler}
+                />
+            )}
+        </React.Fragment>
+    );
 };
 
 export default MyAnimals;

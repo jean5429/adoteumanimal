@@ -41,6 +41,7 @@ const AnimalList = (props) => {
                     page={props.page}
                     description={animal.description}
                     appearance={animal.appearance}
+                    onDelete={props.onDeleteAnimal}
                 />
             ))}
         </ul>

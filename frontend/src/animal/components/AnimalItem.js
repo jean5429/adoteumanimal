@@ -5,12 +5,16 @@ import Avatar from '../../shared/components/UIElements/Avatar';
 import Card from '../../shared/components/UIElements/Card';
 import Modal from '../../shared/components/UIElements/Modal';
 import Button from '../../shared/components/FormElements/Button';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 
 import './AnimalItem.css';
 
 const AnimalItem = (props) => {
     const auth = useContext(AuthContext);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const [showAnimal, setShowAnimal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -25,14 +29,23 @@ const AnimalItem = (props) => {
         setShowConfirmModal(false);
     };
 
-    const confirmDeleteHandler = () => {
+    const confirmDeleteHandler = async () => {
         setShowConfirmModal(false);
         setShowAnimal(false);
-        console.log('Deletando...');
+        try {
+            sendRequest(
+                `http://localhost:5000/api/animal/${props.id}`,
+                'DELETE'
+            );
+            props.onDelete(props.id);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
         <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
             <Modal
                 show={showAnimal}
                 onCancel={closeAnimalHandler}
@@ -42,6 +55,7 @@ const AnimalItem = (props) => {
                 footer={<Button onClick={closeAnimalHandler}>Fechar</Button>}
             >
                 <Card>
+                    {isLoading && <LoadingSpinner asOverlay />}
                     <div className="details-container center">
                         <div className="details-item">
                             <div className="details-item__image">
@@ -59,19 +73,21 @@ const AnimalItem = (props) => {
                                 <p>Aparência: {props.appearance}</p>
                             </div>
                             <div className="details-item__actions">
-                                {auth.isLoggedIn && (
-                                    <Button to={`/animal/edit/${props.id}`}>
-                                        EDITAR
-                                    </Button>
-                                )}
-                                {auth.isLoggedIn && (
-                                    <Button
-                                        danger
-                                        onClick={showDeleteWarningHandler}
-                                    >
-                                        DELETAR
-                                    </Button>
-                                )}
+                                {auth.isLoggedIn &&
+                                    auth.userID === props.owner && (
+                                        <Button to={`/animal/edit/${props.id}`}>
+                                            EDITAR
+                                        </Button>
+                                    )}
+                                {auth.isLoggedIn &&
+                                    auth.userID === props.owner && (
+                                        <Button
+                                            danger
+                                            onClick={showDeleteWarningHandler}
+                                        >
+                                            DELETAR
+                                        </Button>
+                                    )}
                             </div>
                         </div>
                     </div>
