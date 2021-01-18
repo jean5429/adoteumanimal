@@ -21,16 +21,25 @@ import { AuthContext } from './shared/context/auth-context';
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState(false);
+    const [userName, setUserName] = useState(false);
+    const [userImage, setUserImage] = useState(false);
+    const [userType, setUserType] = useState(false);
 
-    const login = useCallback((uid) => {
+    const login = useCallback((userInfo) => {
         setIsLoggedIn(true);
-        setUserId(uid);
-    });
+        setUserId(userInfo.id);
+        setUserName(userInfo.name);
+        setUserImage(userInfo.image);
+        setUserType(userInfo.type);
+    }, []);
 
     const logout = useCallback(() => {
         setIsLoggedIn(false);
         setUserId(null);
-    });
+        setUserName(null);
+        setUserImage(null);
+        setUserType(null);
+    }, []);
 
     let routes;
 
@@ -85,6 +94,9 @@ const App = () => {
             value={{
                 isLoggedIn: isLoggedIn,
                 userId: userId,
+                userName: userName,
+                userImage: userImage,
+                userType: userType,
                 login: login,
                 logout: logout,
             }}

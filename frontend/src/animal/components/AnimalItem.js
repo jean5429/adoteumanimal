@@ -74,13 +74,25 @@ const AnimalItem = (props) => {
                             </div>
                             <div className="details-item__actions">
                                 {auth.isLoggedIn &&
-                                    auth.userID === props.owner && (
+                                    auth.userType != 'ong' &&
+                                    auth.userId !== props.owner && (
+                                        <Button success to={`#`}>
+                                            ADOTAR
+                                        </Button>
+                                    )}
+                                {!auth.isLoggedIn && (
+                                    <Button success to={`/auth`}>
+                                        FAÇA LOGIN PARA ADOTAR
+                                    </Button>
+                                )}
+                                {auth.isLoggedIn &&
+                                    auth.userId === props.owner && (
                                         <Button to={`/animal/edit/${props.id}`}>
                                             EDITAR
                                         </Button>
                                     )}
                                 {auth.isLoggedIn &&
-                                    auth.userID === props.owner && (
+                                    auth.userId === props.owner && (
                                         <Button
                                             danger
                                             onClick={showDeleteWarningHandler}

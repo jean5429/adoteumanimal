@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import AnimalItem from './AnimalItem';
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
+import { AuthContext } from '../../shared/context/auth-context';
+
 import './AnimalList.css';
 
-function pageType(page) {
+function pageType(page, userType) {
     if (page === 'myanimals') {
         return (
-            <p>
-                <h2>Nenhum animal cadastrado.</h2>
-                <Button to="/animal/novo">Cadastrar novo animal</Button>
-            </p>
+            <div>
+                <p className="center">Nenhum animal cadastrado</p>
+                {userType == 'ong' && (
+                    <Button to="/animal/novo">Cadastrar novo animal</Button>
+                )}
+                {userType != 'ong' && (
+                    <p className="center">
+                        As adoções em andamento ou finalizadas aparecerão aqui.
+                    </p>
+                )}
+            </div>
         );
     } else {
         return <h2>Nenhum animal cadastrado.</h2>;
@@ -19,10 +28,11 @@ function pageType(page) {
 }
 
 const AnimalList = (props) => {
+    const auth = useContext(AuthContext);
     if (Object.keys(props.items).length === 0) {
         return (
             <div className="center empty-list">
-                <Card>{pageType(props.page)}</Card>
+                <Card>{pageType(props.page, auth.userType)}</Card>
             </div>
         );
     }

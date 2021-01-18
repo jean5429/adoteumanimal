@@ -47,6 +47,10 @@ code {
     align-items: center;
 }
 
+.capitalize {
+    text-transform: capitalize;
+}
+
 .button-success {
     background-color: #4caf50;
     border: none;

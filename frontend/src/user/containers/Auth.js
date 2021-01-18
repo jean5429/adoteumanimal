@@ -5,6 +5,7 @@ import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import {
     VALIDATOR_MINLENGTH,
     VALIDATOR_EMAIL,
@@ -42,6 +43,7 @@ const Auth = () => {
                     ...formState.inputs,
                     name: undefined,
                     usertype: undefined,
+                    image: undefined,
                 },
                 formState.inputs.email.isValid &&
                     formState.inputs.password.isValid
@@ -57,6 +59,10 @@ const Auth = () => {
                     usertype: {
                         value: 'user',
                         isValid: true,
+                    },
+                    image: {
+                        value: null,
+                        isValid: false,
                     },
                 },
                 false
@@ -80,26 +86,24 @@ const Auth = () => {
                         'Content-Type': 'application/json',
                     }
                 );
-                auth.login(responseData.user.id);
+                auth.login(responseData.user);
             } catch (err) {
                 console.log(err);
             }
         } else {
             try {
+                const formData = new FormData();
+                formData.append('name', formState.inputs.name.value);
+                formData.append('email', formState.inputs.email.value);
+                formData.append('type', formState.inputs.usertype.value);
+                formData.append('password', formState.inputs.password.value);
+                formData.append('image', formState.inputs.image.value);
                 const responseData = await sendRequest(
                     'http://localhost:5000/api/users/signup',
                     'POST',
-                    JSON.stringify({
-                        name: formState.inputs.name.value,
-                        email: formState.inputs.email.value,
-                        password: formState.inputs.password.value,
-                        type: formState.inputs.usertype.value,
-                    }),
-                    {
-                        'Content-Type': 'application/json',
-                    }
+                    formData
                 );
-                auth.login(responseData.user.id);
+                auth.login(responseData.user);
             } catch (err) {
                 console.log(err);
             }
@@ -140,6 +144,11 @@ const Auth = () => {
                                 label="Seu Nome aqui"
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Por favor, insira um nome"
+                                onInput={inputHandler}
+                            />
+                            <ImageUpload
+                                center
+                                id="image"
                                 onInput={inputHandler}
                             />
                         </React.Fragment>

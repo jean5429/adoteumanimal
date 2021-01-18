@@ -249,49 +249,56 @@ const UpdateAnimal = () => {
     return (
         <React.Fragment>
             <ErrorModal error={error} onClear={clearError} />
-            {!isLoading && loadedAnimal && (
-                <form
-                    className="animal-form"
-                    onSubmit={animalUpdateSubmitHandler}
-                >
-                    <Input
-                        id="city"
-                        element="input"
-                        type="text"
-                        label="Cidade"
-                        validators={[VALIDATOR_REQUIRE()]}
-                        errorText="Por favor, coloque uma cidade válida."
-                        onInput={inputHandler}
-                        initialValue={loadedAnimal.city}
-                        initialValidity={true}
-                    />
-                    <Input
-                        id="description"
-                        element="textarea"
-                        label="Descrição"
-                        validators={[VALIDATOR_MINLENGTH(5)]}
-                        placeholder="Descrição da personalidade do animal."
-                        errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
-                        onInput={inputHandler}
-                        initialValue={loadedAnimal.description}
-                        initialValidity={true}
-                    />
-                    <Input
-                        id="appearance"
-                        element="textarea"
-                        label="Aparência"
-                        validators={[VALIDATOR_MINLENGTH(5)]}
-                        placeholder="Descrição da aparência física do animal."
-                        errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
-                        onInput={inputHandler}
-                        initialValue={loadedAnimal.appearance}
-                        initialValidity={true}
-                    />
-                    <Button success type="submit" disabled={!formState.isValid}>
-                        Atualizar Animal
-                    </Button>
-                </form>
-            )}
+            {!isLoading &&
+                loadedAnimal &&
+                auth.isLoggedIn &&
+                auth.userId === loadedAnimal.owner && (
+                    <form
+                        className="animal-form"
+                        onSubmit={animalUpdateSubmitHandler}
+                    >
+                        <Input
+                            id="city"
+                            element="input"
+                            type="text"
+                            label="Cidade"
+                            validators={[VALIDATOR_REQUIRE()]}
+                            errorText="Por favor, coloque uma cidade válida."
+                            onInput={inputHandler}
+                            initialValue={loadedAnimal.city}
+                            initialValidity={true}
+                        />
+                        <Input
+                            id="description"
+                            element="textarea"
+                            label="Descrição"
+                            validators={[VALIDATOR_MINLENGTH(5)]}
+                            placeholder="Descrição da personalidade do animal."
+                            errorText="Por favor, coloque uma descrição válida (pelo menos 5 caracteres)."
+                            onInput={inputHandler}
+                            initialValue={loadedAnimal.description}
+                            initialValidity={true}
+                        />
+                        <Input
+                            id="appearance"
+                            element="textarea"
+                            label="Aparência"
+                            validators={[VALIDATOR_MINLENGTH(5)]}
+                            placeholder="Descrição da aparência física do animal."
+                            errorText="Por favor, coloque uma aparência válida (pelo menos 5 caracteres)."
+                            onInput={inputHandler}
+                            initialValue={loadedAnimal.appearance}
+                            initialValidity={true}
+                        />
+                        <Button
+                            success
+                            type="submit"
+                            disabled={!formState.isValid}
+                        >
+                            Atualizar Animal
+                        </Button>
+                    </form>
+                )}
         </React.Fragment>
     );
 };

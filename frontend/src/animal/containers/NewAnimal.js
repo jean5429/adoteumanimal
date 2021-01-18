@@ -44,6 +44,8 @@ const NewAnimal = () => {
 
     const animalSubmitHandler = async (event) => {
         event.preventDefault();
+        if (auth.userType != 'ong')
+            throw new Error('Somente ONGs podem cadastrar novos animais.');
         try {
             await sendRequest(
                 'http://localhost:5000/api/animal/',

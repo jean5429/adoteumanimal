@@ -19,7 +19,7 @@ const AnimalDetails = (props) => {
                     </div>
                     <div className="details-item__info">
                         <h2>{animal.name}</h2>
-                        <h3>{animal.species}</h3>
+                        <h3 className="capitalize">{animal.species}</h3>
                         <p>{animal.city}</p>
                         <p>Descrição: {animal.description}</p>
                         <p>Aparência: {animal.appearante}</p>

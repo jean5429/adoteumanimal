@@ -18,9 +18,9 @@ const NavLinks = (props) => {
                     <NavLink to="/meusanimais">MEUS ANIMAIS</NavLink>
                 </li>
             )}
-            {auth.isLoggedIn && (
+            {auth.isLoggedIn && auth.userType == 'ong' && (
                 <li>
-                    <NavLink to="/animal/novo">NOVO ANIMAL</NavLink>
+                    <NavLink to="/  ">NOVO ANIMAL</NavLink>
                 </li>
             )}
             {!auth.isLoggedIn && (
@@ -31,6 +31,18 @@ const NavLinks = (props) => {
             {auth.isLoggedIn && (
                 <li>
                     <button onClick={auth.logout}>LOGOUT</button>
+                </li>
+            )}
+            {auth.isLoggedIn && auth.userImage && (
+                <li>
+                    <img
+                        src={
+                            'http://localhost:5000/' +
+                            auth.userImage.replaceAll('\\', '/')
+                        }
+                        className="nav-links__user-image"
+                        alt="userImage"
+                    />
                 </li>
             )}
         </ul>
