@@ -5,6 +5,7 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_MINLENGTH,
@@ -22,6 +23,10 @@ const NewAnimal = () => {
         {
             name: {
                 value: '',
+                isValid: false,
+            },
+            image: {
+                value: null,
                 isValid: false,
             },
             description: {
@@ -44,23 +49,21 @@ const NewAnimal = () => {
 
     const animalSubmitHandler = async (event) => {
         event.preventDefault();
-        if (auth.userType != 'ong')
+        if (auth.userType !== 'ong')
             throw new Error('Somente ONGs podem cadastrar novos animais.');
         try {
+            const formData = new FormData();
+            formData.append('name', formState.inputs.name.value);
+            formData.append('city', formState.inputs.city.value);
+            formData.append('species', formState.inputs.species.value);
+            formData.append('image', formState.inputs.image.value);
+            formData.append('description', formState.inputs.description.value);
+            formData.append('appearance', formState.inputs.appearance.value);
+            formData.append('owner', auth.userId);
             await sendRequest(
                 'http://localhost:5000/api/animal/',
                 'POST',
-                JSON.stringify({
-                    name: formState.inputs.name.value,
-                    city: formState.inputs.city.value,
-                    species: formState.inputs.species.value,
-                    image:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSwZrJUFAW-Bg-21tnCy9w3fiq8xTSqV5viqA&usqp=CAU',
-                    description: formState.inputs.description.value,
-                    appearance: formState.inputs.appearance.value,
-                    owner: auth.userId,
-                }),
-                { 'Content-Type': 'application/json' }
+                formData
             );
             history.push('/');
         } catch (err) {
@@ -81,6 +84,12 @@ const NewAnimal = () => {
                     validators={[VALIDATOR_REQUIRE()]}
                     errorText="Por favor, coloque um nome válido."
                     onInput={inputHandler}
+                />
+                <ImageUpload
+                    center
+                    id="image"
+                    onInput={inputHandler}
+                    errorText="Por favor, insira uma imagem"
                 />
                 <Input
                     id="species"

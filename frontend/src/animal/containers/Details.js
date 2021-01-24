@@ -24,8 +24,9 @@ const Details = () => {
             image:
                 'https://portaldoscaesegatos.com.br/wp-content/uploads/2017/07/adotar-1.jpg',
             owner: '1',
-            description: '',
-            appearance: '',
+            description:
+                'Cachorro amigável, adora brincar de bolinha e tomar banho de piscina.',
+            appearance: 'Pelagem preta arrepiada com barba marrom.',
         },
         {
             id: '3',

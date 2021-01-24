@@ -150,6 +150,7 @@ const Auth = () => {
                                 center
                                 id="image"
                                 onInput={inputHandler}
+                                errorText="Por favor, insira uma imagem"
                             />
                         </React.Fragment>
                     )}

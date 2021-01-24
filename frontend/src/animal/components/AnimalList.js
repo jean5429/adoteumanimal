@@ -12,10 +12,12 @@ function pageType(page, userType) {
         return (
             <div>
                 <p className="center">Nenhum animal cadastrado</p>
-                {userType == 'ong' && (
-                    <Button to="/animal/novo">Cadastrar novo animal</Button>
+                {userType === 'ong' && (
+                    <div className="center">
+                        <Button to="/animal/novo">Cadastrar novo animal</Button>
+                    </div>
                 )}
-                {userType != 'ong' && (
+                {userType !== 'ong' && (
                     <p className="center">
                         As adoções em andamento ou finalizadas aparecerão aqui.
                     </p>

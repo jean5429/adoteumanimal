@@ -43,6 +43,10 @@ const AnimalItem = (props) => {
         }
     };
 
+    const imageURL = !props.image.indexOf('http')
+        ? props.image
+        : 'http://localhost:5000/' + props.image;
+
     return (
         <React.Fragment>
             <ErrorModal error={error} onClear={clearError} />
@@ -59,22 +63,26 @@ const AnimalItem = (props) => {
                     <div className="details-container center">
                         <div className="details-item">
                             <div className="details-item__image">
-                                <Avatar image={props.image} alt={props.name} />
+                                <Avatar image={imageURL} alt={props.name} />
                             </div>
                             <div className="details-item__info">
                                 <h2>{props.name}</h2>
                                 <h3>
                                     {props.species === 'dog'
-                                        ? 'cachorro'
-                                        : 'gato'}
+                                        ? 'Cachorro'
+                                        : 'Gato'}
                                 </h3>
                                 <p>{props.city}</p>
-                                <p>Descrição: {props.description}</p>
-                                <p>Aparência: {props.appearance}</p>
+                                <p>
+                                    <b>Descrição:</b> {props.description}
+                                </p>
+                                <p>
+                                    <b>Aparência:</b> {props.appearance}
+                                </p>
                             </div>
                             <div className="details-item__actions">
                                 {auth.isLoggedIn &&
-                                    auth.userType != 'ong' &&
+                                    auth.userType !== 'ong' &&
                                     auth.userId !== props.owner && (
                                         <Button success to={`#`}>
                                             ADOTAR
@@ -86,13 +94,15 @@ const AnimalItem = (props) => {
                                     </Button>
                                 )}
                                 {auth.isLoggedIn &&
-                                    auth.userId === props.owner && (
+                                    auth.userId === props.owner &&
+                                    auth.userType === 'ong' && (
                                         <Button to={`/animal/edit/${props.id}`}>
                                             EDITAR
                                         </Button>
                                     )}
                                 {auth.isLoggedIn &&
-                                    auth.userId === props.owner && (
+                                    auth.userId === props.owner &&
+                                    auth.userType === 'ong' && (
                                         <Button
                                             danger
                                             onClick={showDeleteWarningHandler}
@@ -134,7 +144,7 @@ const AnimalItem = (props) => {
                         onClick={openAnimalHandler}
                     >
                         <div className="animal-item__image">
-                            <Avatar image={props.image} alt={props.name} />
+                            <Avatar image={imageURL} alt={props.name} />
                         </div>
                         <div className="animal-item__info">
                             <h2>{props.name}</h2>

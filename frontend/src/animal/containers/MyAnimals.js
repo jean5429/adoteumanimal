@@ -6,8 +6,10 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
-const MyAnimals = () => {
+const MyAnimals = (props) => {
     const auth = useContext(AuthContext);
     const [loadedAnimals, setLoadedAnimals] = useState();
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -185,6 +187,7 @@ const MyAnimals = () => {
                     onDeleteAnimal={AnimalDeletedHandler}
                 />
             )}
+            <ToastContainer />
         </React.Fragment>
     );
 };
