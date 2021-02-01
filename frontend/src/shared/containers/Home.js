@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import AnimalList from '../../animal/components/AnimalList';
 import MainPageWarning from '../components/MainPageWarning';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
-const Animals = () => {
-    const ANIMALS = [
+const Animals = (props) => {
+    const auth = useContext(AuthContext);
+    const [loadedAnimals, setLoadedAnimals] = useState();
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    //Check in the future if auth, error and clearError will be needed
+
+    let ANIMALS = [
         {
             id: '1',
             name: 'Caramelo',
@@ -139,10 +148,34 @@ const Animals = () => {
             appearance: '',
         },
     ];
+
+    useEffect(() => {
+        const fetchAnimals = async () => {
+            try {
+                const responseData = await sendRequest(
+                    `http://localhost:5000/api/animal`
+                );
+                setLoadedAnimals(responseData.animals);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchAnimals();
+    }, [sendRequest]);
+    if (loadedAnimals) ANIMALS = ANIMALS.concat(loadedAnimals);
+
+    if (isLoading) {
+        return (
+            <div className="center">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
     return (
         <React.Fragment>
             <MainPageWarning />
-            <AnimalList items={ANIMALS} page="home" />
+            {!isLoading && <AnimalList items={ANIMALS} page="home" />}
         </React.Fragment>
     );
 };

@@ -20,7 +20,7 @@ const NavLinks = (props) => {
             )}
             {auth.isLoggedIn && auth.userType === 'ong' && (
                 <li>
-                    <NavLink to="/  ">NOVO ANIMAL</NavLink>
+                    <NavLink to="/animal/novo">NOVO ANIMAL</NavLink>
                 </li>
             )}
             {!auth.isLoggedIn && (
