@@ -5,6 +5,7 @@ import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { NotificationContext } from '../../shared/context/notification-context';
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_MINLENGTH,
@@ -248,6 +249,12 @@ const UpdateAnimal = () => {
 
     return (
         <React.Fragment>
+            <NotificationContext.Provider
+                value={{
+                    type: 'sucess',
+                    message: 'message',
+                }}
+            ></NotificationContext.Provider>
             <ErrorModal error={error} onClear={clearError} />
             {!isLoading &&
                 loadedAnimal &&
